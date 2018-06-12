@@ -1,0 +1,28 @@
+language: go
+go:
+- 1.x
+install:
+- go get ./...
+- go get github.com/urfave/cli
+script:
+- GOOS=linux GOARCH=amd64 go build -o release/epoch-Linux-x86_64
+- GOOS=linux GOARCH=386 go build -o release/epoch-Linux-i386
+- GOOS=darwin GOARCH=amd64 go build -o release/epoch-Darwin-x86_64
+- GOOS=darwin GOARCH=386 go build -o release/epoch-Darwin-i386
+- GOOS=windows GOARCH=amd64 go build -o release/epoch-Windows-x86_64.exe --ldflags="-H windowsgui"
+- GOOS=windows GOARCH=386 go build -o release/epoch-Windows-i386.exe --ldflags="-H windowsgui"
+deploy:
+  provider: releases
+  api_key:
+    secure: BTt8Gp8mrQWQiU9S2DXU7lHDapzz40cxrXdx8M0EjLnV105s9Muqo2KuI8SAzR+yTPPeGgTMXTvROpAOsvjJeuO1ISJyemn+8vwsJOx9Dyn8NryF9CBA93GYRRG3Uj8GEvNWRg0zcfKBVJxDCmp2i2ZcF05vmIzJy8BO6xUXpLOi+ZMbGXxBG+utZ3xM+3ChUxxKWPfk/epBMkK5XZSQhKF0ooB2oAd+JtXc78it5G5Vw45M8tjEn8763d27tTaJx/BbF8U+CHs+B01Nc6pEOL6/ZfC36KPxTTV8yrDR1qQP6U0RuCA6NcyUzbwrdb01b/FPXdpJFXalfkmR7UJ+K0NGq402ppyP8drPZoPmtkl1JWLqsvf+/1BJhqcBNKcE3ITjJ9urploNwAq1oEWHTf0Bu4p/622omvQshxJIetqzcJ2Yyi0UOx/cjDOIG32HMM0IzEgm6cq4yTIWXwvPJHXr7OozfIIjrC7/rW0LLhCbHdVt/ARMfM8wzsToWtkWF4fKp9LvK3EdcOKzpcQj9anOrHqctJEEvYUP32DlpqGWdSTlI+oyHF3V7ETZa7bHuVwP+0KOZHu2g5d4/Li6CKuhqEiBCkUMnr2E5s2z6qJpPMWlARaKWnV4P+CIQiCO0AIwDcH6ybr6NMw25/8bOTfcc4hwfp8Qc2L6mAAkpJk=
+  skip_cleanup: true
+  file:
+    - release/epoch-Linux-x86_64
+    - release/epoch-Linux-i386
+    - release/epoch-Darwin-x86_64
+    - release/epoch-Darwin-i386
+    - release/epoch-Windows-x86_64.exe
+    - release/epoch-Windows-i386.exe
+  on:
+    repo: gumieri/epoch
+    tags: true
